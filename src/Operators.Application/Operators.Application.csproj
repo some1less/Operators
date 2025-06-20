@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Operators.DTO\Operators.DTO.csproj" />
+      <ProjectReference Include="..\Operators.Infrastructure\Operators.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -1,4 +1,4 @@
-namespace Operators.Application;
+namespace Operators.Application.Exceptions;
 
 public class ClientErrorException : Exception
 {
