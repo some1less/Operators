@@ -183,8 +183,8 @@ public class OperatorRepository : IOperatorRepository
             conn.Open();
             
             SqlCommand cmdInsert = new SqlCommand(insertSql, conn);
-            cmdInsert.Parameters.AddWithValue("@Operator_Id", dto.OperatorId);
-            cmdInsert.Parameters.AddWithValue("@Client_Id", dto.ClientId);
+            cmdInsert.Parameters.AddWithValue("@Operator_Id", dto.Operator_Id);
+            cmdInsert.Parameters.AddWithValue("@Client_Id", dto.Client_Id);
             cmdInsert.Parameters.AddWithValue("@Number", dto.Number);
 
             var newId = (int)cmdInsert.ExecuteScalar();
@@ -194,8 +194,8 @@ public class OperatorRepository : IOperatorRepository
             return new PhoneNumber()
             {
                 Id = newId,
-                OperatorId = dto.OperatorId,
-                ClientId = dto.ClientId,
+                OperatorId = dto.Operator_Id,
+                ClientId = dto.Client_Id,
                 Number = dto.Number
             };
             
@@ -208,8 +208,6 @@ public class OperatorRepository : IOperatorRepository
                 Client (Fullname, Email, City) 
                         OUTPUT INSERTED.Id
                         VALUES (@Fullname, @Email, @City)";
-
-        
         
         using (SqlConnection conn = new SqlConnection(_connectionString))
         {

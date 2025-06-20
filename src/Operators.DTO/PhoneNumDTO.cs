@@ -2,7 +2,7 @@ namespace Operators.DTO;
 
 public class PhoneNumDTO
 {
-    public int OperatorId { get; set; }
-    public int ClientId { get; set; }
+    public int Operator_Id { get; set; }
+    public int Client_Id { get; set; }
     public required string Number { get; set; }
 }

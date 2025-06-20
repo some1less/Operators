@@ -83,8 +83,8 @@ public class OperatorService : IOperatorService
 
         var phoneNumber = new PhoneNumDTO()
         {
-            OperatorId = opera.Id,
-            ClientId = findClient.Id,
+            Operator_Id = opera.Id,
+            Client_Id = findClient.Id,
             Number = dto.MobileNumber,
         };
         
