@@ -43,7 +43,7 @@ public class OperatorService : IOperatorService
         {
             throw new ClientErrorException("Invalid mobile number");
         }
-
+        
         if (!string.IsNullOrEmpty(dto.Client.Email) && (string.IsNullOrEmpty(dto.Client.Fullname) || string.IsNullOrEmpty(dto.Client.City)))
         {
             var client = _repository.GetClientByEmail(dto.Client.Email);
@@ -52,14 +52,30 @@ public class OperatorService : IOperatorService
 
         if (!string.IsNullOrEmpty(dto.Client.Email) && !string.IsNullOrEmpty(dto.Client.Fullname))
         {
-            var newClient = new ClientDTO()
+            var client = _repository.GetClientByEmail(dto.Client.Email);
+            
+            if (client is null)
             {
-                Fullname = dto.Client.Fullname,
+                var newClient = new ClientDTO()
+                {
+                    Fullname = dto.Client.Fullname,
+                    Email = dto.Client.Email,
+                    City = dto.Client.City,
+                };
+            
+                _repository.CreateClient(newClient);
+            }
+
+            var updateClient = new Client()
+            {
+                Id = client!.Id,
                 Email = dto.Client.Email,
+                Fullname = dto.Client.Fullname,
                 City = dto.Client.City,
             };
             
-            _repository.CreateClient(newClient);
+            _repository.UpdateClient(updateClient);
+
         }
         
         var opera = _repository.GetOperatorByName(dto.Operator);

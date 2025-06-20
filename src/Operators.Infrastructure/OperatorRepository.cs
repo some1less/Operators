@@ -176,15 +176,15 @@ public class OperatorRepository : IOperatorRepository
         const string insertSql = @"INSERT INTO 
                 PhoneNumber (Operator_Id, Client_Id, Number) 
                         OUTPUT INSERTED.Id
-                        VALUES (@OperatorId, @ClientId, @Number)";
+                        VALUES (@Operator_Id, @Client_Id, @Number)";
 
         using (SqlConnection conn = new SqlConnection(_connectionString))
         {
             conn.Open();
             
             SqlCommand cmdInsert = new SqlCommand(insertSql, conn);
-            cmdInsert.Parameters.AddWithValue("@OperatorId", dto.OperatorId);
-            cmdInsert.Parameters.AddWithValue("@ClientId", dto.ClientId);
+            cmdInsert.Parameters.AddWithValue("@Operator_Id", dto.OperatorId);
+            cmdInsert.Parameters.AddWithValue("@Client_Id", dto.ClientId);
             cmdInsert.Parameters.AddWithValue("@Number", dto.Number);
 
             var newId = (int)cmdInsert.ExecuteScalar();
@@ -204,13 +204,13 @@ public class OperatorRepository : IOperatorRepository
 
     public Client CreateClient(ClientDTO client)
     {
-        
-        
         const string insertSql = @"INSERT INTO 
                 Client (Fullname, Email, City) 
                         OUTPUT INSERTED.Id
                         VALUES (@Fullname, @Email, @City)";
 
+        
+        
         using (SqlConnection conn = new SqlConnection(_connectionString))
         {
             conn.Open();
@@ -218,9 +218,57 @@ public class OperatorRepository : IOperatorRepository
             SqlCommand cmdInsert = new SqlCommand(insertSql, conn);
             cmdInsert.Parameters.AddWithValue("@Fullname", client.Fullname);
             cmdInsert.Parameters.AddWithValue("@Email", client.Email);
-            cmdInsert.Parameters.AddWithValue("@City", client.City);
-
+            if (client.City != null)
+            {               
+                cmdInsert.Parameters.AddWithValue("@City", client.City);
+            }
+            else
+            {
+                cmdInsert.Parameters.AddWithValue("@City", DBNull.Value);
+            }
+            
+            
             var newId = (int)cmdInsert.ExecuteScalar();
+            
+            conn.Close();
+
+            return new Client()
+            {
+                Id = newId,
+                Fullname = client.Fullname,
+                Email = client.Email,
+                City = client.City
+            };
+            
+        }
+    }
+
+    public Client UpdateClient(Client client)
+    {
+        const string updateSql = @"UPDATE Client
+                                    SET Fullname = @Fullname, Email = @Email , City = @City
+                                    WHERE Id = @Id";
+        
+        using (SqlConnection conn = new SqlConnection(_connectionString))
+        {
+            conn.Open();
+            
+            SqlCommand cmdUpdate = new SqlCommand(updateSql, conn);
+            
+            cmdUpdate.Parameters.AddWithValue("@Id", client.Id);
+            cmdUpdate.Parameters.AddWithValue("@Fullname", client.Fullname);
+            cmdUpdate.Parameters.AddWithValue("@Email", client.Email);
+            if (client.City != null)
+            {               
+                cmdUpdate.Parameters.AddWithValue("@City", client.City);
+            }
+            else
+            {
+                cmdUpdate.Parameters.AddWithValue("@City", DBNull.Value);
+            }
+            
+            
+            var newId = (int)cmdUpdate.ExecuteScalar();
             
             conn.Close();
 

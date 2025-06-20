@@ -13,5 +13,6 @@ public interface IOperatorRepository
     
     PhoneNumber CreatePhoneNumber(PhoneNumDTO dto);
     Client CreateClient(ClientDTO client);
+    Client UpdateClient(Client client);
 
 }
